@@ -3,7 +3,10 @@ FROM sterbene/hadoop-hive-spark:3.0.1
 ARG LIVY_VERSION=0.8.0-incubating-SNAPSHOT
 ENV LIVY_HOME /usr/livy
 ENV LIVY_CONF_DIR "${LIVY_HOME}/conf"
-RUN git clone https://github.com/apache/incubator-livy.git \
+RUN apk add --no-cache \
+    git \
+    maven \
+  && git clone https://github.com/apache/incubator-livy.git \
   && cd incubator-livy \
   && mvn clean package -B -V -e \
     -Pspark-3.0 \
