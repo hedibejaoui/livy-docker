@@ -1,13 +1,18 @@
 #FROM bigdata-docker-compose_master:latest
 FROM panovvv/hadoop-hive-spark:2.5.2
 
-ARG LIVY_VERSION=0.7.0-incubating
+ARG LIVY_VERSION=0.8.0-incubating-SNAPSHOT
 ENV LIVY_HOME /usr/livy
 ENV LIVY_CONF_DIR "${LIVY_HOME}/conf"
-RUN curl --progress-bar -L --retry 3 \
-    "http://archive.apache.org/dist/incubator/livy/${LIVY_VERSION}/apache-livy-${LIVY_VERSION}-bin.zip" \
-    -o "./apache-livy-${LIVY_VERSION}-bin.zip" \
-  && unzip -qq "./apache-livy-${LIVY_VERSION}-bin.zip" -d /usr \
+RUN git clone https://github.com/apache/incubator-livy.git \
+  && cd incubator-livy \
+  && mvn clean package -B -V -e \
+    -Pspark-3.0 \
+    -Pthriftserver \
+    -DskipTests \
+    -DskipITs \
+    -Dmaven.javadoc.skip=true \
+  && unzip -qq "assembly/target/apache-livy-${LIVY_VERSION}}-bin.zip" -d /usr \
   && mv "/usr/apache-livy-${LIVY_VERSION}-bin" "${LIVY_HOME}" \
   && rm -rf "./apache-livy-${LIVY_VERSION}-bin.zip" \
   && mkdir "${LIVY_HOME}/logs" \
