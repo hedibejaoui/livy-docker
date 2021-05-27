@@ -6,7 +6,7 @@ ENV LIVY_CONF_DIR "${LIVY_HOME}/conf"
 RUN curl --progress-bar -L --retry 3 \
     "https://github.com/hedibejaoui/livy-docker/releases/download/0.8.0/apache-livy-${LIVY_VERSION}-bin.zip" \
     -o "./apache-livy-${LIVY_VERSION}-bin.zip" \
-  && unzip -qq "./apache-livy-${LIVY_VERSION}}-bin.zip" -d /usr \
+  && unzip -qq "./apache-livy-${LIVY_VERSION}-bin.zip" -d /usr \
   && mv "/usr/apache-livy-${LIVY_VERSION}-bin" "${LIVY_HOME}" \
   && rm -rf "./apache-livy-${LIVY_VERSION}-bin.zip" \
   && mkdir "${LIVY_HOME}/logs" \
